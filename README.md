@@ -189,6 +189,11 @@ FeatureHub is ideal for high-speed fraud prevention workflows:
 - [ ] Cloud object-storage support
 - [ ] Expanded observability dashboards
 
+## 📸 Snapshots
+<img width="1200" height="500" alt="image" src="https://github.com/user-attachments/assets/5866fc35-d916-4253-9d70-5c2d0ca76bfe" />
+<img width="1200" height="500" alt="image" src="https://github.com/user-attachments/assets/8413a5c6-f7d4-41c0-b53e-ca05511ec469" />
+<img width="1200" height="500" alt="image" src="https://github.com/user-attachments/assets/7fe94bd6-c429-47dd-b4ec-7ab68c007d7b" />
+
 ## 🤝 Contributing
 
 Contributions, feature ideas, and bug reports are welcome.
