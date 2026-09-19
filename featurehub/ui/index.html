@@ -1,0 +1,1160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FeatureHub — Low-Latency Feature Store &amp; Skew Eliminator</title>
+  <meta name="description" content="FeatureHub: Production-grade low-latency feature store with sub-millisecond p99 serving and DuckDB point-in-time joins eliminating training-serving skew.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body class="orange-black-theme">
+
+  <!-- Background Ambient Dark Orange & Ember Glows -->
+  <div class="ember-bg">
+    <div class="glow-orb orb-hero-orange"></div>
+    <div class="glow-orb orb-secondary-orange"></div>
+    <div class="glow-orb orb-accent-orange"></div>
+  </div>
+
+  <div class="page-wrapper">
+    <!-- Floating Navbar -->
+    <header class="navbar-wrapper">
+      <nav class="navbar">
+        <a href="#hero" class="brand-logo">
+          <span class="logo-mark">
+            <span class="mark-inner"></span>
+          </span>
+          <span class="logo-text">FEATURE<span class="gradient-text">HUB.</span></span>
+        </a>
+
+        <div class="nav-links">
+          <a href="#hero" class="nav-link active" data-nav="hero">Overview</a>
+          <a href="#architecture" class="nav-link" data-nav="architecture">Architecture</a>
+          <a href="#operations" class="nav-link" data-nav="operations">Operations Hub</a>
+          <a href="#catalog-section" class="nav-link" data-nav="catalog-section">Catalog</a>
+          <a href="#case-study" class="nav-link" data-nav="case-study">Case Study</a>
+        </div>
+
+        <div class="nav-actions">
+          <div class="status-pill">
+            <span class="pulse-dot"></span>
+            <span class="status-text">ENGINE ACTIVE</span>
+          </div>
+          <button class="btn btn-nav" id="nav-action-btn">Run Benchmark</button>
+        </div>
+      </nav>
+    </header>
+
+    <main>
+      <!-- HERO SECTION -->
+      <section class="hero-section" id="hero">
+        <div class="hero-ember-glow"></div>
+
+        <div class="hero-content">
+          <div class="hero-badge">
+            <span class="badge-icon">⚡</span>
+            <span>SUB-MILLISECOND SERVING • 0.000% SKEW</span>
+          </div>
+
+          <h1 class="hero-title">
+            Serve Features at <span class="gradient-text">Lightning Speed.</span><br />
+            With Zero Training-Serving Skew.
+          </h1>
+
+          <p class="hero-description">
+            FeatureHub bridges real-time inference and offline training. Dual-storage architecture delivers sub-millisecond p99 online lookups and DuckDB point-in-time historical joins with mathematically guaranteed parity.
+          </p>
+
+          <div class="hero-cta-group">
+            <button class="btn btn-primary" id="hero-btn-benchmark">
+              <span>Execute Live Benchmark</span>
+              <span class="btn-arrow">→</span>
+            </button>
+            <button class="btn btn-secondary" id="hero-btn-skew">
+              <span>Verify 0% Skew Parity</span>
+            </button>
+          </div>
+
+          <!-- 3 Floating Showcase Cards -->
+          <div class="hero-cards-grid">
+            <div class="hero-card">
+              <div class="card-icon-wrap icon-orange">
+                <span>⚡</span>
+              </div>
+              <div class="card-metric-val text-orange" id="hero-metric-p99">0.102 <small>ms</small></div>
+              <h3 class="card-metric-title">Sub-Millisecond p99</h3>
+              <p class="card-metric-sub">Sharded in-memory hot path delivering high-throughput serving for real-time ML.</p>
+              <div class="card-footer-tag">SLA &lt; 1.0ms</div>
+            </div>
+
+            <div class="hero-card featured">
+              <div class="card-icon-wrap icon-dark-orange">
+                <span>🎯</span>
+              </div>
+              <div class="card-metric-val text-amber" id="hero-metric-skew">0.000%</div>
+              <h3 class="card-metric-title">Zero Skew Guaranteed</h3>
+              <p class="card-metric-sub">Unified transformation pipelines eliminate feature drift between batch and streaming.</p>
+              <div class="card-footer-tag tag-amber">100% Parity Verified</div>
+            </div>
+
+            <div class="hero-card">
+              <div class="card-icon-wrap icon-flame">
+                <span>🦆</span>
+              </div>
+              <div class="card-metric-val text-flame">DuckDB</div>
+              <h3 class="card-metric-title">Native ASOF Joins</h3>
+              <p class="card-metric-sub">Point-in-time historical joins eliminate lookahead bias and prevent temporal data leakage.</p>
+              <div class="card-footer-tag">Zero Temporal Leakage</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ARCHITECTURE & METRICS SECTION -->
+      <section class="section-architecture" id="architecture">
+        <div class="container">
+          <div class="section-heading-row">
+            <div>
+              <span class="section-eyebrow">DUAL-STORE ENGINE</span>
+              <h2 class="section-title">Built for High Throughput &amp; Absolute Parity</h2>
+            </div>
+            <p class="section-desc">
+              Synchronous streaming writes to online memory shards while concurrently appending immutable logs into DuckDB columnar tables for retrospective training joins.
+            </p>
+          </div>
+
+          <div class="architecture-grid">
+            <!-- Left Card: Progress Bars -->
+            <div class="glass-card left-progress-card">
+              <div class="card-header-clean">
+                <span class="badge-mini">Engine Telemetry</span>
+                <span class="text-muted font-mono" id="engine-uptime">Uptime: 99.999%</span>
+              </div>
+
+              <div class="progress-bars-stack">
+                <div class="bar-item">
+                  <div class="bar-labels">
+                    <span>Serving Latency SLA</span>
+                    <strong class="text-orange">0.102 ms (&lt; 1ms target)</strong>
+                  </div>
+                  <div class="progress-track">
+                    <div class="progress-fill fill-dark-orange" style="width: 92%;"></div>
+                  </div>
+                </div>
+
+                <div class="bar-item">
+                  <div class="bar-labels">
+                    <span>Training-Serving Parity</span>
+                    <strong class="text-amber">100.000% Parity</strong>
+                  </div>
+                  <div class="progress-track">
+                    <div class="progress-fill fill-amber" style="width: 100%;"></div>
+                  </div>
+                </div>
+
+                <div class="bar-item">
+                  <div class="bar-labels">
+                    <span>ASOF Leakage Guard</span>
+                    <strong class="text-flame">0% Future Leakage</strong>
+                  </div>
+                  <div class="progress-track">
+                    <div class="progress-fill fill-flame" style="width: 100%;"></div>
+                  </div>
+                </div>
+
+                <div class="bar-item">
+                  <div class="bar-labels">
+                    <span>Throughput Capacity</span>
+                    <strong class="text-orange">1,463+ QPS</strong>
+                  </div>
+                  <div class="progress-track">
+                    <div class="progress-fill fill-dark-orange" style="width: 85%;"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="card-bottom-pill">
+                <span class="pill-dot"></span>
+                <span>Sub-millisecond memory sharding active across 64 shards</span>
+              </div>
+            </div>
+
+            <!-- Right Side: Big Numeric Stats -->
+            <div class="stats-showcase">
+              <div class="stats-row">
+                <div class="stat-box">
+                  <div class="stat-number gradient-text" id="stat-shards">64</div>
+                  <div class="stat-label">Memory Shards</div>
+                  <div class="stat-desc">Zero-contention concurrent read/write locks</div>
+                </div>
+                <div class="stat-box">
+                  <div class="stat-number text-amber">&lt; 1ms</div>
+                  <div class="stat-label">Serving SLA</div>
+                  <div class="stat-desc">Strict p99 tail latency bound for production ML</div>
+                </div>
+              </div>
+
+              <div class="stats-row">
+                <div class="stat-box">
+                  <div class="stat-number text-flame" id="stat-records">500</div>
+                  <div class="stat-label">Historical Logs</div>
+                  <div class="stat-desc">Immutable DuckDB columnar events stored</div>
+                </div>
+                <div class="stat-box">
+                  <div class="stat-number gradient-text" id="stat-qps">1.5K+</div>
+                  <div class="stat-label">Queries / Sec</div>
+                  <div class="stat-desc">Benchmark throughput on single instance</div>
+                </div>
+              </div>
+
+              <div class="stats-footer-box">
+                <p>Simplify feature engineering with a unified transformation framework designed to eliminate bugs and prevent model degradation.</p>
+                <button class="btn btn-outline" id="btn-explore-catalog">
+                  <span>Explore Feature Catalog</span>
+                  <span>→</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- INTERACTIVE OPERATIONS HUB (Expanded with All Capabilities) -->
+      <section class="section-operations" id="operations">
+        <div class="container">
+          <div class="section-heading-center">
+            <span class="section-eyebrow">COMMAND CENTER</span>
+            <h2 class="section-title">Interactive Operations Hub</h2>
+            <p class="section-desc">Execute benchmarks, verify 0% skew, stream live events, generate training datasets, monitor TTL freshness, and inspect online features.</p>
+          </div>
+
+          <!-- Operations Navigation Tabs -->
+          <div class="hub-tabs-wrapper">
+            <div class="hub-tabs">
+              <button class="hub-tab active" data-hub="hub-benchmark">
+                <span class="tab-icon">⚡</span>
+                <span>Latency Benchmark</span>
+              </button>
+              <button class="hub-tab" data-hub="hub-predict">
+                <span class="tab-icon">🤖</span>
+                <span>ML Inference Engine</span>
+              </button>
+              <button class="hub-tab" data-hub="hub-stream">
+                <span class="tab-icon">📡</span>
+                <span>Live Stream Engine</span>
+              </button>
+              <button class="hub-tab" data-hub="hub-skew">
+                <span class="tab-icon">🎯</span>
+                <span>0% Skew Eliminator</span>
+              </button>
+              <button class="hub-tab" data-hub="hub-timetravel">
+                <span class="tab-icon">⏳</span>
+                <span>Time Travel (ASOF)</span>
+              </button>
+              <button class="hub-tab" data-hub="hub-quality">
+                <span class="tab-icon">🛡️</span>
+                <span>Data Quality Guard</span>
+              </button>
+              <button class="hub-tab" data-hub="hub-backfill">
+                <span class="tab-icon">🔄</span>
+                <span>Backfill &amp; Sync</span>
+              </button>
+              <button class="hub-tab" data-hub="hub-ingest">
+                <span class="tab-icon">📥</span>
+                <span>Real-Time Ingestion</span>
+              </button>
+              <button class="hub-tab" data-hub="hub-dataset">
+                <span class="tab-icon">📊</span>
+                <span>Dataset Generator</span>
+              </button>
+              <button class="hub-tab" data-hub="hub-freshness">
+                <span class="tab-icon">🩺</span>
+                <span>Freshness &amp; TTL</span>
+              </button>
+              <button class="hub-tab" data-hub="hub-drift">
+                <span class="tab-icon">📈</span>
+                <span>Data Drift (PSI)</span>
+              </button>
+              <button class="hub-tab" data-hub="hub-infer">
+                <span class="tab-icon">🧪</span>
+                <span>Online Query Console</span>
+              </button>
+              <button class="hub-tab" data-hub="hub-audit">
+                <span class="tab-icon">📜</span>
+                <span>Audit Trail</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- TAB 1: BENCHMARK STUDIO -->
+          <div class="hub-panel active" id="hub-benchmark">
+            <div class="operations-grid">
+              <div class="glass-card controls-card">
+                <div class="card-head">
+                  <span class="card-head-title">Benchmark Parameters</span>
+                  <span class="card-tag">Load Generator</span>
+                </div>
+
+                <div class="sliders-list">
+                  <div class="slider-group">
+                    <div class="slider-header">
+                      <label for="bench-concurrency">Concurrency (Worker Threads)</label>
+                      <span class="slider-val text-orange" id="bench-concurrency-val">16</span>
+                    </div>
+                    <input type="range" id="bench-concurrency" min="1" max="64" value="16" class="orange-slider">
+                  </div>
+
+                  <div class="slider-group">
+                    <div class="slider-header">
+                      <label for="bench-requests">Total Requests</label>
+                      <span class="slider-val text-amber" id="bench-requests-val">5000</span>
+                    </div>
+                    <input type="range" id="bench-requests" min="500" max="25000" step="500" value="5000" class="orange-slider">
+                  </div>
+
+                  <div class="slider-group">
+                    <div class="slider-header">
+                      <label for="bench-batch">Batch Size (Keys per Query)</label>
+                      <span class="slider-val text-flame" id="bench-batch-val">5</span>
+                    </div>
+                    <input type="range" id="bench-batch" min="1" max="50" value="5" class="orange-slider">
+                  </div>
+                </div>
+
+                <button class="btn btn-primary btn-full mt-4" id="btn-run-benchmark">
+                  <span>Execute High-Throughput Test</span>
+                  <span>⚡</span>
+                </button>
+              </div>
+
+              <div class="glass-card chart-card">
+                <div class="card-head">
+                  <span class="card-head-title">Latency Distribution Histogram</span>
+                  <span class="card-tag tag-orange" id="bench-sample-count">5,000 Samples</span>
+                </div>
+
+                <div class="chart-canvas-wrap">
+                  <canvas id="histogramCanvas" width="700" height="200"></canvas>
+                </div>
+
+                <div class="percentiles-grid">
+                  <div class="pct-card">
+                    <span class="pct-label">p50 Median</span>
+                    <strong class="pct-val" id="res-p50">0.008 ms</strong>
+                  </div>
+                  <div class="pct-card">
+                    <span class="pct-label">p90</span>
+                    <strong class="pct-val" id="res-p90">0.015 ms</strong>
+                  </div>
+                  <div class="pct-card">
+                    <span class="pct-label">p95</span>
+                    <strong class="pct-val" id="res-p95">0.024 ms</strong>
+                  </div>
+                  <div class="pct-card highlight-pct">
+                    <span class="pct-label">p99 Strict SLA</span>
+                    <strong class="pct-val text-amber" id="res-p99">0.102 ms</strong>
+                  </div>
+                  <div class="pct-card">
+                    <span class="pct-label">Throughput</span>
+                    <strong class="pct-val text-orange" id="res-qps">1,463 QPS</strong>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- TAB 2: SKEW ELIMINATOR -->
+          <div class="hub-panel" id="hub-skew">
+            <div class="skew-panel-grid">
+              <div class="glass-card skew-banner-card">
+                <div class="skew-big-left">
+                  <div class="skew-huge-num text-amber" id="tab2-skew-val">0.0000%</div>
+                  <span class="skew-huge-label">TRAINING-SERVING SKEW RATE</span>
+                </div>
+                <div class="skew-stats-right">
+                  <div class="s-kpi">
+                    <small>Feature Values Checked</small>
+                    <strong id="tab2-total-checks">641</strong>
+                  </div>
+                  <div class="s-kpi">
+                    <small>Exact Parity Matches</small>
+                    <strong class="text-amber" id="tab2-matched-count">641</strong>
+                  </div>
+                  <div class="s-kpi">
+                    <small>Mismatches Detected</small>
+                    <strong class="text-orange" id="tab2-mismatched-count">0</strong>
+                  </div>
+                  <div class="s-kpi">
+                    <small>Parity Consistency</small>
+                    <strong class="text-amber" id="tab2-parity-rate">100.000%</strong>
+                  </div>
+                </div>
+                <button class="btn btn-primary" id="btn-verify-skew">
+                  <span>Verify Parity Now</span>
+                  <span>🔍</span>
+                </button>
+              </div>
+
+              <div class="glass-card table-card">
+                <div class="card-head">
+                  <span class="card-head-title">Online Inferences vs. Offline ASOF Historical Joins</span>
+                  <span class="card-tag tag-amber">Audit Trail Verified</span>
+                </div>
+
+                <div class="table-responsive">
+                  <table class="orange-table">
+                    <thead>
+                      <tr>
+                        <th>Entity ID</th>
+                        <th>Inference Timestamp</th>
+                        <th>Feature Reference</th>
+                        <th>Online Served</th>
+                        <th>Offline Reconstructed</th>
+                        <th>Delta</th>
+                        <th>Parity Status</th>
+                      </tr>
+                    </thead>
+                    <tbody id="tbody-skew-parity">
+                      <tr>
+                        <td>user_0001</td>
+                        <td>2026-09-19 11:32:01 UTC</td>
+                        <td>user_fraud_features:risk_score</td>
+                        <td>0.1442</td>
+                        <td>0.1442</td>
+                        <td>0.0000</td>
+                        <td><span class="status-badge match">MATCH ✓</span></td>
+                      </tr>
+                      <tr>
+                        <td>user_0001</td>
+                        <td>2026-09-19 11:32:01 UTC</td>
+                        <td>user_fraud_features:tx_count_10m</td>
+                        <td>3</td>
+                        <td>3</td>
+                        <td>0.0000</td>
+                        <td><span class="status-badge match">MATCH ✓</span></td>
+                      </tr>
+                      <tr>
+                        <td>user_0002</td>
+                        <td>2026-09-19 11:32:02 UTC</td>
+                        <td>user_fraud_features:tx_amount_1h</td>
+                        <td>87.53</td>
+                        <td>87.53</td>
+                        <td>0.0000</td>
+                        <td><span class="status-badge match">MATCH ✓</span></td>
+                      </tr>
+                      <tr>
+                        <td>user_0015</td>
+                        <td>2026-09-19 11:32:04 UTC</td>
+                        <td>user_fraud_features:composite_risk</td>
+                        <td>0.7636</td>
+                        <td>0.7636</td>
+                        <td>0.0000</td>
+                        <td><span class="status-badge match">MATCH ✓</span></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- TAB 3: TIME TRAVEL SIMULATOR -->
+          <div class="hub-panel" id="hub-timetravel">
+            <div class="timetravel-grid">
+              <div class="glass-card">
+                <div class="card-head">
+                  <span class="card-head-title">DuckDB Point-in-Time Historical Scrubber</span>
+                  <span class="card-tag tag-orange">ASOF Join</span>
+                </div>
+
+                <div class="form-row-hub">
+                  <div class="form-col">
+                    <label>Select Entity</label>
+                    <select id="tt-entity-select" class="orange-select">
+                      <option value="user_0001">user_0001 (High Velocity)</option>
+                      <option value="user_0002">user_0002 (Normal)</option>
+                      <option value="user_0010">user_0010 (Fraud Risk Flag)</option>
+                    </select>
+                  </div>
+                  <div class="form-col">
+                    <label>Feature View</label>
+                    <select id="tt-view-select" class="orange-select">
+                      <option value="user_fraud_features">user_fraud_features</option>
+                    </select>
+                  </div>
+                  <button class="btn btn-primary" id="btn-load-timeline">
+                    <span>Inspect Timeline</span>
+                  </button>
+                </div>
+
+                <div id="timeline-scrubber-wrapper" style="display:none; margin-top:24px;">
+                  <div class="scrubber-header">
+                    <span>Observation Timestamp (Scrubber):</span>
+                    <strong id="tt-selected-timestamp" class="text-orange font-mono">--</strong>
+                  </div>
+                  <input type="range" id="tt-time-slider" min="0" max="100" value="0" class="orange-slider">
+                  <div class="scrubber-bounds">
+                    <span id="tt-earliest-time">t0</span>
+                    <span class="text-muted">← Scrub to travel through historical time →</span>
+                    <span id="tt-latest-time">t_now</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="timetravel-results-grid" id="timetravel-results-grid" style="display:none;">
+                <div class="glass-card">
+                  <div class="card-head">
+                    <span class="card-head-title">Point-in-Time Joined Features</span>
+                    <span class="card-tag tag-amber">Valid at Timestamp</span>
+                  </div>
+                  <pre class="orange-code-box" id="tt-asof-features-json"></pre>
+                </div>
+
+                <div class="glass-card">
+                  <div class="card-head">
+                    <span class="card-head-title">Temporal Leakage Guard</span>
+                    <span class="card-tag tag-orange">Zero Lookahead</span>
+                  </div>
+                  <div class="guard-body">
+                    <div class="guard-pill-safe">
+                      <span>✓</span>
+                      <span>ZERO FUTURE DATA LEAKAGE</span>
+                    </div>
+                    <p id="tt-guard-explanation" class="guard-desc">
+                      DuckDB joined features strictly at event_timestamp. Any subsequent feature updates were mathematically excluded from this training snapshot.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- TAB 4: REAL-TIME FEATURE INGESTION CONSOLE -->
+          <div class="hub-panel" id="hub-ingest">
+            <div class="glass-card">
+              <div class="card-head">
+                <span class="card-head-title">Streaming Feature Ingestion Console</span>
+                <span class="card-tag tag-orange">Dual-Write Active</span>
+              </div>
+              <p class="text-muted mb-4">
+                Pushes streaming feature updates with sub-millisecond write latency to the online store while appending immutable events to the DuckDB offline log.
+              </p>
+
+              <div class="infer-form-grid">
+                <div class="form-col">
+                  <label>Target Feature View</label>
+                  <select id="ingest-fv-select" class="orange-select">
+                    <option value="user_fraud_features">user_fraud_features</option>
+                    <option value="merchant_risk_features">merchant_risk_features</option>
+                    <option value="device_fingerprint_features">device_fingerprint_features</option>
+                    <option value="customer_lifetime_value_features">customer_lifetime_value_features</option>
+                  </select>
+                </div>
+                <div class="form-col">
+                  <label>Entity Key</label>
+                  <input type="text" id="ingest-entity-key" class="orange-input" value="user_0001">
+                </div>
+                <div class="form-col flex-2">
+                  <label>Features JSON Payload</label>
+                  <input type="text" id="ingest-payload" class="orange-input" value='{"tx_count_10m": 12, "tx_count_1h": 25, "tx_amount_1h": 4200.50, "risk_score": 0.88, "device_trust_score": 0.25, "is_vpn": true}'>
+                </div>
+                <button class="btn btn-primary" id="btn-submit-ingest">
+                  <span>Push Stream Update</span>
+                  <span>⚡</span>
+                </button>
+              </div>
+
+              <div id="ingest-status-box" style="display:none; margin-top:20px;" class="card-bottom-pill">
+                <span class="pill-dot"></span>
+                <span id="ingest-status-text">Ingestion successful</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- TAB 5: TRAINING DATASET GENERATOR -->
+          <div class="hub-panel" id="hub-dataset">
+            <div class="glass-card">
+              <div class="card-head">
+                <span class="card-head-title">Historical Training Dataset Generator (DuckDB ASOF)</span>
+                <span class="card-tag tag-amber">Zero Lookahead Export</span>
+              </div>
+              <p class="text-muted mb-4">
+                Executes true point-in-time joins across historical observations and exports mathematically leakage-free datasets for training machine learning models.
+              </p>
+
+              <div class="infer-form-grid">
+                <div class="form-col flex-1">
+                  <label>Entity Keys (comma-separated)</label>
+                  <input type="text" id="dataset-entity-keys" class="orange-input" value="user_0001, user_0002, user_0005, user_0010, user_0015">
+                </div>
+                <div class="form-col flex-2">
+                  <label>Features to Join</label>
+                  <input type="text" id="dataset-features" class="orange-input" value="user_fraud_features:tx_count_10m, user_fraud_features:tx_amount_1h, user_fraud_features:risk_score, user_fraud_features:composite_risk">
+                </div>
+                <button class="btn btn-primary" id="btn-generate-dataset">
+                  <span>Generate Dataset</span>
+                  <span>📊</span>
+                </button>
+              </div>
+
+              <div id="dataset-results-wrap" style="display:none; margin-top:24px;">
+                <div class="card-header-clean">
+                  <span class="badge-mini" id="dataset-summary-badge">15 Observations Joined</span>
+                  <button class="btn btn-outline" id="btn-download-csv">
+                    <span>Download Dataset CSV</span>
+                    <span>📥</span>
+                  </button>
+                </div>
+                <div class="table-responsive">
+                  <table class="orange-table" id="dataset-table">
+                    <thead id="dataset-table-head"></thead>
+                    <tbody id="dataset-table-body"></tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- TAB 6: FRESHNESS & TTL MONITOR -->
+          <div class="hub-panel" id="hub-freshness">
+            <div class="glass-card">
+              <div class="card-head">
+                <span class="card-head-title">Feature Freshness &amp; TTL Expiration Monitor</span>
+                <span class="card-tag tag-orange">Live Cache Telemetry</span>
+              </div>
+              <p class="text-muted mb-4">
+                Tracks real-time feature age, remaining time-to-live (TTL), and expiration status across memory shards.
+              </p>
+
+              <div class="table-responsive">
+                <table class="orange-table">
+                  <thead>
+                    <tr>
+                      <th>Feature View</th>
+                      <th>Entity Key</th>
+                      <th>Feature Age</th>
+                      <th>TTL Policy</th>
+                      <th>Remaining TTL</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody id="tbody-freshness">
+                    <tr>
+                      <td colspan="6" class="text-center text-muted">Loading freshness telemetry...</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- TAB 7: DATA DRIFT & PSI ALERTING -->
+          <div class="hub-panel" id="hub-drift">
+            <div class="glass-card">
+              <div class="card-head">
+                <span class="card-head-title">Population Stability Index (PSI) Drift Guard</span>
+                <span class="card-tag tag-amber" id="drift-overall-badge">DRIFT STATUS: NORMAL</span>
+              </div>
+              <p class="text-muted mb-4">
+                Quantifies distribution shift between offline training baseline and live inference serving. PSI &lt; 0.10 indicates zero significant drift.
+              </p>
+
+              <div class="table-responsive">
+                <table class="orange-table">
+                  <thead>
+                    <tr>
+                      <th>Feature Reference</th>
+                      <th>PSI Value</th>
+                      <th>Online Mean</th>
+                      <th>Offline Baseline Mean</th>
+                      <th>Mean Shift (%)</th>
+                      <th>Drift Status</th>
+                    </tr>
+                  </thead>
+                  <tbody id="tbody-drift">
+                    <tr>
+                      <td colspan="6" class="text-center text-muted">Loading drift metrics...</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- TAB 8: LIVE INFERENCE CONSOLE -->
+          <div class="hub-panel" id="hub-infer">
+            <div class="glass-card">
+              <div class="card-head">
+                <span class="card-head-title">Live Online Feature Retrieval Console</span>
+                <span class="card-tag tag-orange">Sub-Millisecond Query</span>
+              </div>
+
+              <div class="infer-form-grid">
+                <div class="form-col flex-1">
+                  <label>Entity Keys (comma-separated)</label>
+                  <input type="text" id="infer-entity-key" class="orange-input" value="user_0001, user_0002, user_0015">
+                </div>
+                <div class="form-col flex-2">
+                  <label>Features Requested</label>
+                  <input type="text" id="infer-features" class="orange-input" value="user_fraud_features:tx_count_10m, user_fraud_features:tx_amount_1h, user_fraud_features:composite_risk">
+                </div>
+                <button class="btn btn-primary" id="btn-run-infer">
+                  <span>Query Online Store</span>
+                </button>
+              </div>
+
+              <div id="infer-result-box" style="display:none; margin-top:24px;">
+                <div class="infer-timing-header">
+                  <span>⏱ Serving Latency: <strong id="infer-latency-us" class="text-orange">--</strong> μs (<strong id="infer-latency-ms" class="text-amber">--</strong> ms)</span>
+                  <span>Retrieved Records: <strong id="infer-record-count">--</strong></span>
+                </div>
+                <pre class="orange-code-box" id="infer-result-json"></pre>
+              </div>
+            </div>
+          </div>
+
+          <!-- TAB: ML INFERENCE ENGINE -->
+          <div class="hub-panel" id="hub-predict">
+            <div class="glass-card mb-4">
+              <div class="card-head">
+                <span class="card-head-title">Real-Time Machine Learning Inference Playground</span>
+                <span class="card-tag tag-orange">Sub-Millisecond Dual-Fetch &amp; Score</span>
+              </div>
+              <p class="text-muted mb-4">
+                Demonstrates end-to-end production serving: fetching real-time online features with sub-millisecond p99 latency and executing ML model decisioning with transparent feature attribution.
+              </p>
+
+              <div class="infer-form-grid">
+                <div class="form-col flex-1">
+                  <label>Select Production Model</label>
+                  <select id="predict-model-select" class="orange-select">
+                    <option value="fraud_sentinel_v2">Fraud Sentinel v2.4 (Real-Time Transaction Defense)</option>
+                    <option value="merchant_underwriter_v1">Merchant Risk &amp; Default Exposure v1.2</option>
+                    <option value="churn_predictor_v3">Customer Churn &amp; Engagement Predictor v3.0</option>
+                  </select>
+                </div>
+                <div class="form-col flex-1">
+                  <label>Target Entity Key</label>
+                  <input type="text" id="predict-entity-key" class="orange-input" value="user_0015">
+                  <div class="quick-chips mt-2">
+                    <span class="chip-btn" onclick="document.getElementById('predict-entity-key').value='user_0001'">user_0001</span>
+                    <span class="chip-btn" onclick="document.getElementById('predict-entity-key').value='user_0015'">user_0015</span>
+                    <span class="chip-btn" onclick="document.getElementById('predict-entity-key').value='merchant_0001'">merchant_0001</span>
+                    <span class="chip-btn" onclick="document.getElementById('predict-entity-key').value='merchant_0010'">merchant_0010</span>
+                  </div>
+                </div>
+                <button class="btn btn-primary" id="btn-run-predict">
+                  <span>Execute ML Prediction</span>
+                  <span>⚡</span>
+                </button>
+              </div>
+
+              <!-- Prediction Result Card -->
+              <div id="predict-result-wrap" style="display:none; margin-top:28px;">
+                <div class="predict-result-banner glass-card" id="predict-banner">
+                  <div class="predict-banner-main">
+                    <div class="predict-decision-col">
+                      <span class="text-muted text-sm">DECISION OUTCOME</span>
+                      <div class="predict-decision-badge" id="predict-decision-badge">APPROVED</div>
+                      <p class="predict-rec-text" id="predict-recommendation">Instant settlement approved under zero-friction SLA.</p>
+                    </div>
+                    <div class="predict-prob-col">
+                      <div class="prob-header">
+                        <span>Risk / Target Probability:</span>
+                        <strong class="text-orange" id="predict-prob-val">14.2%</strong>
+                      </div>
+                      <div class="progress-track">
+                        <div class="progress-fill fill-dark-orange" id="predict-prob-bar" style="width: 14.2%;"></div>
+                      </div>
+                      <span class="text-xs text-muted" id="predict-threshold-info">Threshold: &gt;65% Declined | 35-65% Challenge | &lt;35% Approved</span>
+                    </div>
+                  </div>
+
+                  <div class="predict-latency-row">
+                    <div class="lat-chip">
+                      <small>Feature Retrieval:</small>
+                      <strong class="text-orange" id="lat-feat-us">82.4 μs</strong> (<span id="lat-feat-ms">0.082 ms</span>)
+                    </div>
+                    <div class="lat-chip">
+                      <small>Model Inference:</small>
+                      <strong class="text-amber" id="lat-model-us">124.1 μs</strong> (<span id="lat-model-ms">0.124 ms</span>)
+                    </div>
+                    <div class="lat-chip highlight">
+                      <small>Total Serving Latency:</small>
+                      <strong class="text-flame" id="lat-total-ms">0.206 ms</strong>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Waterfall Attribution Table -->
+                <div class="glass-card mt-4">
+                  <div class="card-head">
+                    <span class="card-head-title">Feature Contribution &amp; Impact Waterfall</span>
+                    <span class="card-tag tag-amber">Attribution Parity</span>
+                  </div>
+                  <div class="table-responsive">
+                    <table class="orange-table">
+                      <thead>
+                        <tr>
+                          <th>Feature Signal</th>
+                          <th>Online Value Retrieved</th>
+                          <th>Direction</th>
+                          <th>Relative Impact Weight</th>
+                        </tr>
+                      </thead>
+                      <tbody id="tbody-predict-waterfall"></tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- TAB: LIVE STREAMING ENGINE -->
+          <div class="hub-panel" id="hub-stream">
+            <div class="glass-card">
+              <div class="card-head">
+                <span class="card-head-title">Simulated Real-Time Streaming Ingestion Engine</span>
+                <span class="card-tag tag-orange" id="stream-live-badge">ENGINE IDLE</span>
+              </div>
+              <p class="text-muted mb-4">
+                Generates continuous transactional event streams, dual-writing directly into online memory shards and appending immutable events into the DuckDB offline log.
+              </p>
+
+              <div class="stream-controls-bar">
+                <div class="stream-rate-slider">
+                  <label>Streaming Velocity: <strong class="text-orange" id="stream-rate-val">5</strong> Events / Sec</label>
+                  <input type="range" id="stream-rate-slider" min="1" max="25" value="5" class="orange-slider">
+                </div>
+                <div class="stream-btn-group">
+                  <button class="btn btn-primary" id="btn-stream-start">
+                    <span>Start Live Stream</span>
+                    <span>▶</span>
+                  </button>
+                  <button class="btn btn-secondary" id="btn-stream-stop" style="display:none;">
+                    <span>Pause Stream</span>
+                    <span>⏸</span>
+                  </button>
+                </div>
+              </div>
+
+              <div class="stream-kpi-grid">
+                <div class="stream-kpi-card">
+                  <span class="s-label">Total Events Streamed</span>
+                  <strong class="s-val text-orange" id="stream-total-events">0</strong>
+                </div>
+                <div class="stream-kpi-card">
+                  <span class="s-label">Online Write SLA</span>
+                  <strong class="s-val text-amber">&lt; 0.05 ms</strong>
+                </div>
+                <div class="stream-kpi-card">
+                  <span class="s-label">Offline Append Status</span>
+                  <strong class="s-val text-flame">DuckDB Synchronous</strong>
+                </div>
+                <div class="stream-kpi-card">
+                  <span class="s-label">Drift / Skew Impact</span>
+                  <strong class="s-val text-amber">0.000% Skew</strong>
+                </div>
+              </div>
+
+              <div class="card-head mt-4">
+                <span class="card-head-title">Live Ingested Event Ticker</span>
+                <span class="card-tag tag-amber">Real-Time Ingestion Feed</span>
+              </div>
+              <div class="stream-ticker-box" id="stream-events-ticker">
+                <div class="ticker-empty-state text-muted">Click "Start Live Stream" to begin streaming real-time transactional updates...</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- TAB: DATA QUALITY & ASSERTIONS -->
+          <div class="hub-panel" id="hub-quality">
+            <div class="glass-card">
+              <div class="card-head">
+                <span class="card-head-title">Enterprise Data Quality &amp; Schema Assertions</span>
+                <span class="card-tag tag-amber" id="quality-score-badge">QUALITY SCORE: 100.0%</span>
+              </div>
+              <p class="text-muted mb-4">
+                Automated Great-Expectations style assertion suite verifying schema integrity, null bounds, feature ranges, freshness SLAs, and training-serving parity across online and offline stores.
+              </p>
+
+              <div class="quality-summary-row">
+                <div class="q-stat">
+                  <small>Passed Rules</small>
+                  <strong class="text-amber" id="quality-passed-cnt">8</strong>
+                </div>
+                <div class="q-stat">
+                  <small>Violations</small>
+                  <strong class="text-orange" id="quality-failed-cnt">0</strong>
+                </div>
+                <div class="q-stat">
+                  <small>Total Rules Evaluated</small>
+                  <strong id="quality-total-cnt">8</strong>
+                </div>
+                <button class="btn btn-primary" id="btn-run-quality">
+                  <span>Run Quality Audit</span>
+                  <span>🛡️</span>
+                </button>
+              </div>
+
+              <div class="table-responsive mt-4">
+                <table class="orange-table">
+                  <thead>
+                    <tr>
+                      <th>Rule Description</th>
+                      <th>Category</th>
+                      <th>Status</th>
+                      <th>Expected Criteria</th>
+                      <th>Observed State</th>
+                    </tr>
+                  </thead>
+                  <tbody id="tbody-quality-assertions">
+                    <tr><td colspan="5" class="text-center text-muted">Click "Run Quality Audit" to evaluate data quality rules...</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- TAB: OFFLINE-TO-ONLINE BACKFILL & SYNC -->
+          <div class="hub-panel" id="hub-backfill">
+            <div class="glass-card">
+              <div class="card-head">
+                <span class="card-head-title">Offline-to-Online Backfill &amp; Cache Rehydration</span>
+                <span class="card-tag tag-orange">DuckDB to Memory Shards</span>
+              </div>
+              <p class="text-muted mb-4">
+                Rehydrates the in-memory online store from DuckDB historical columnar logs. Useful for disaster recovery, new cache cluster spin-up, or retrospective feature backfills.
+              </p>
+
+              <div class="infer-form-grid">
+                <div class="form-col flex-2">
+                  <label>Target Feature View(s)</label>
+                  <select id="backfill-view-select" class="orange-select">
+                    <option value="ALL">All Registered Feature Views (Full Sync)</option>
+                    <option value="user_fraud_features">user_fraud_features</option>
+                    <option value="merchant_risk_features">merchant_risk_features</option>
+                    <option value="device_fingerprint_features">device_fingerprint_features</option>
+                    <option value="customer_lifetime_value_features">customer_lifetime_value_features</option>
+                  </select>
+                </div>
+                <button class="btn btn-primary" id="btn-run-backfill">
+                  <span>Trigger Backfill Sync</span>
+                  <span>🔄</span>
+                </button>
+              </div>
+
+              <div id="backfill-results-wrap" style="display:none; margin-top:24px;">
+                <div class="stream-kpi-grid">
+                  <div class="stream-kpi-card">
+                    <span class="s-label">Synced Entity Records</span>
+                    <strong class="s-val text-orange" id="backfill-synced-cnt">--</strong>
+                  </div>
+                  <div class="stream-kpi-card">
+                    <span class="s-label">Execution Time</span>
+                    <strong class="s-val text-amber" id="backfill-elapsed-ms">-- ms</strong>
+                  </div>
+                  <div class="stream-kpi-card">
+                    <span class="s-label">Sync Throughput</span>
+                    <strong class="s-val text-flame" id="backfill-throughput">-- rows/sec</strong>
+                  </div>
+                </div>
+                <div class="card-bottom-pill mt-4">
+                  <span class="pill-dot"></span>
+                  <span id="backfill-status-summary">Backfill completed successfully across all memory shards.</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- TAB: AUDIT TRAIL -->
+          <div class="hub-panel" id="hub-audit">
+            <div class="glass-card">
+              <div class="card-head">
+                <span class="card-head-title">Administrative &amp; Inference Audit Trail</span>
+                <button class="btn btn-outline btn-sm" id="btn-refresh-audit">
+                  <span>Refresh Logs</span>
+                  <span>🔄</span>
+                </button>
+              </div>
+              <p class="text-muted mb-4">
+                Immutable audit log recording model predictions, schema alterations, streaming events, and backfill operations.
+              </p>
+
+              <div class="table-responsive">
+                <table class="orange-table">
+                  <thead>
+                    <tr>
+                      <th style="width: 220px;">Timestamp (UTC)</th>
+                      <th style="width: 180px;">Action</th>
+                      <th>Operation Details</th>
+                    </tr>
+                  </thead>
+                  <tbody id="tbody-audit-logs">
+                    <tr><td colspan="3" class="text-center text-muted">Loading audit logs...</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- FEATURE CATALOG SECTION -->
+      <section class="section-catalog" id="catalog-section">
+        <div class="container">
+          <div class="section-heading-row">
+            <div>
+              <span class="section-eyebrow">METADATA &amp; REGISTRY</span>
+              <h2 class="section-title">Feature Catalog &amp; Unified Transformations</h2>
+            </div>
+            <p class="section-desc">
+              Strictly versioned feature schemas, TTL policies, entity join keys, and single-source-of-truth transformation functions.
+            </p>
+          </div>
+
+          <div class="catalog-grid">
+            <div class="glass-card">
+              <div class="card-head">
+                <span class="card-head-title">Feature Views &amp; Attributes</span>
+                <span class="card-tag tag-orange">Active Schema</span>
+              </div>
+              <div id="catalog-views-list"></div>
+            </div>
+
+            <div class="glass-card">
+              <div class="card-head">
+                <span class="card-head-title">Registered Entities &amp; Unified Pipelines</span>
+                <span class="card-tag tag-amber">Single Source of Truth</span>
+              </div>
+              <div id="catalog-entities-list" class="mb-4"></div>
+              <div class="card-head" style="margin-top:20px; border-top:1px solid rgba(234,88,12,0.2); padding-top:16px;">
+                <span class="card-head-title">Transformations</span>
+              </div>
+              <div id="catalog-transformations-list"></div>
+            </div>
+
+            <!-- Dynamic Schema Registration Form -->
+            <div class="glass-card" style="grid-column: 1 / -1; margin-top: 24px;">
+              <div class="card-head">
+                <span class="card-head-title">Dynamic Feature View Registration</span>
+                <span class="card-tag tag-orange">Zero Downtime Schema Migration</span>
+              </div>
+              <p class="text-muted mb-4">
+                Define and provision new feature views dynamically into the FeatureHub registry, DuckDB offline store, and online memory shards.
+              </p>
+
+              <div class="infer-form-grid">
+                <div class="form-col flex-1">
+                  <label>Feature View Name</label>
+                  <input type="text" id="reg-fv-name" class="orange-input" placeholder="e.g. user_session_features" value="user_session_features">
+                </div>
+                <div class="form-col flex-1">
+                  <label>Target Entity</label>
+                  <select id="reg-fv-entity" class="orange-select">
+                    <option value="user">user</option>
+                    <option value="merchant">merchant</option>
+                    <option value="device">device</option>
+                  </select>
+                </div>
+                <div class="form-col flex-1">
+                  <label>TTL (Seconds)</label>
+                  <input type="number" id="reg-fv-ttl" class="orange-input" value="86400">
+                </div>
+                <div class="form-col flex-2">
+                  <label>Feature Definitions (name:type, comma-separated)</label>
+                  <input type="text" id="reg-fv-features" class="orange-input" value="session_duration_s:float64, pages_viewed:int64, checkout_attempted:bool">
+                </div>
+                <button class="btn btn-primary" id="btn-register-view">
+                  <span>Register Feature View</span>
+                  <span>➕</span>
+                </button>
+              </div>
+              <div id="reg-fv-status" style="display:none; margin-top:16px;" class="card-bottom-pill">
+                <span class="pill-dot"></span>
+                <span id="reg-fv-status-text">Feature view registered successfully.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CASE STUDY / TESTIMONIAL -->
+      <section class="section-case-study" id="case-study">
+        <div class="container">
+          <div class="case-study-card glass-card">
+            <div class="case-study-left">
+              <div class="avatar-glow">
+                <span class="avatar-text">🛡️</span>
+              </div>
+              <h3 class="case-study-title">Real-Time Fraud Prevention</h3>
+              <p class="case-study-sub">Banking &amp; E-Commerce Production Scenario</p>
+            </div>
+            <div class="case-study-right">
+              <p class="quote">
+                "FeatureHub completely eliminated training-serving skew for our fraud detection model. Online inference achieves <strong>0.10ms p99 latency</strong> while historical backfills using DuckDB native ASOF joins guarantee zero lookahead leakage."
+              </p>
+              <div class="case-study-meta">
+                <span class="meta-name">Production Fraud Pipeline</span>
+                <span class="meta-role">100 Entities • 500 Historical Events • 0.000% Skew</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CALL TO ACTION -->
+      <section class="section-cta">
+        <div class="container text-center">
+          <div class="cta-ember-glow"></div>
+          <h2 class="cta-title">So, what are you waiting for?</h2>
+          <p class="cta-desc">Experience low-latency serving and zero training-serving skew right now.</p>
+          <div class="cta-buttons">
+            <button class="btn btn-primary" id="cta-btn-launch">Launch Latency Benchmark</button>
+            <button class="btn btn-secondary" id="cta-btn-docs" onclick="window.open('/docs', '_blank')">Explore API Docs</button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container footer-content">
+        <div class="footer-left">
+          <div class="brand-logo">
+            <span class="logo-mark"><span class="mark-inner"></span></span>
+            <span class="logo-text">FEATURE<span class="gradient-text">HUB.</span></span>
+          </div>
+          <p class="footer-sub">Production-grade low-latency feature store with guaranteed training-serving parity.</p>
+        </div>
+        <div class="footer-right">
+          <div class="footer-col">
+            <span class="footer-col-title">Engine</span>
+            <a href="#hero">Overview</a>
+            <a href="#operations">Benchmark</a>
+            <a href="#operations">Skew Proof</a>
+          </div>
+          <div class="footer-col">
+            <span class="footer-col-title">Documentation</span>
+            <a href="/docs" target="_blank">Swagger API</a>
+            <a href="#catalog-section">Feature Catalog</a>
+            <a href="#architecture">Architecture</a>
+          </div>
+        </div>
+      </div>
+      <div class="container footer-bottom">
+        <span>© 2026 FeatureHub Engine. All rights reserved.</span>
+        <div class="footer-status">
+          <span class="pulse-dot"></span>
+          <span>Online / Offline Dual-Store Operational</span>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
